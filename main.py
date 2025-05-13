@@ -27,4 +27,8 @@ def create_task(task: Task):
 def get_tasks():
     return { "tasks": tasks }
 
+@app.get("/test")
+def add():
+    return {'Name':'Vaishnavi','Age':22}
+
 

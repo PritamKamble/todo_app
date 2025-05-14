@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.responses import FileResponse
+
 
 app = FastAPI()
 
@@ -10,7 +12,7 @@ class Task(BaseModel):
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return FileResponse("static/index.html")
 
 @app.get("/hello123")
 def hello():

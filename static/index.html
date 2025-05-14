@@ -1,6 +1,49 @@
 <html>
-    <body>
-        <h1>This is fast api server</h1>
-        <h2>This is main file when someone loads our server</h2>
-    </body>
+
+<body>
+    <h1>This is fast api server</h1>
+    <h2>This is main file when someone loads our server</h2>
+
+    <input type="text" id="task-name" placeholder="Enter task name">
+    <button onclick="addTask()">Add Task</button>
+
+    <button onclick="getTasks()">Get Tasks</button>
+    <ul id="tasks-list"></ul>
+</body>
+
+<script>
+    function getTasks() {
+        fetch('/get-tasks')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const tasksList = document.getElementById('tasks-list');
+                tasksList.innerHTML = '';
+                data.tasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.textContent = task.name;
+                    tasksList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching tasks:', error));
+    }
+
+    function addTask() {
+        const taskName = document.getElementById('task-name').value;
+        fetch('/create-task', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: taskName })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            getTasks(); // Refresh the task list
+        })
+        .catch(error => console.error('Error adding task:', error));
+    }
+</script>
+
 </html>

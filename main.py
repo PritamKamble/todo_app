@@ -29,8 +29,16 @@ def create_task(task: Task):
 def get_tasks():
     return { "tasks": tasks }
 
-@app.get("/test")
-def add():
-    return {'Name':'Vaishnavi','Age':22}
+@app.put('/update-task/{task_id}')
+def update_task(task_id: int, task: Task):
+    if task_id < 0 or task_id >= len(tasks):
+        return { 'msg': 'Task not found' }
+    tasks[task_id] = task
+    return { 'msg': 'Task updated succesfully' }
 
-
+@app.delete('/delete-task/{task_id}')
+def delete_task(task_id: int):
+    if task_id < 0 or task_id >= len(tasks):
+        return { 'msg': 'Task not found' }
+    tasks.pop(task_id)
+    return { 'msg': 'Task deleted succesfully' }
